@@ -1,0 +1,24 @@
+{
+  "name": "srcom-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot that retrieves information from speedrun.com",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slashinfty/srcom-bot.git"
+  },
+  "author": "Matt Braddock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slashinfty/srcom-bot/issues"
+  },
+  "homepage": "https://github.com/slashinfty/srcom-bot#readme"
+}
