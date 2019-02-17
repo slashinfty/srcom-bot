@@ -1,9 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const fetch = require('node-fetch');
-const prefix = require('./config.json');
-
-require('http').createServer().listen(3000);
+const prefix = '!src';
+require('dotenv').config();
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -17,27 +15,31 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
+    client.user.setActivity("!src -help");
 });
 
 client.on('message', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).split(/ +/);
-	//const commandName = args.shift().toLowerCase();
-
-    //use client.commands.get(command).execute(message, args);
-    
-    let wildcards = args.split('|'); //[0] is not a wildcard
-    let terms = wildcards[0].split(';');
-    
-    if (terms.length === 1) client.commands.get('game only').execute(message, terms);
-
-	try {
-		command.execute(message, args);
-	} catch (error) {
-		console.error(error);
-		message.reply('Sorry, I was unable to complete that request.');
-	}
+	const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
+    let terms = args[0].split(';');
+    if (terms.length === 0 || terms.length > 3) {
+        message.reply('those are the incorrect number of arguments. Try !src -help if you need assistance.');
+    } else {
+         try {
+            if (terms.length === 1) {
+                if (terms[0] === '-help') client.commands.get('help').execute(message, terms);
+                else client.commands.get('game only').execute(Discord, message, terms);
+            }
+            else if (terms.length === 2) {
+                if (terms[1].charAt(0) === '*') client.commands.get('all categories').execute(Discord, message, terms);
+                else client.commands.get('game and category').execute(Discord, message, terms);
+            } else if (terms.length === 3) client.commands.get('runner pb').execute(Discord, message, terms);
+         } catch (error) {
+            console.error(error);
+            message.reply('sorry, there was a problem. Try !src -help if you need assistance.');
+        }
+    }
 });
 
 client.login(process.env.TOKEN);
