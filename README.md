@@ -1,4 +1,4 @@
-# Adding Speedun Bot to Your Discord Server
+# Discord Speedrun Bot
 
 Click this [link](https://discordapp.com/oauth2/authorize?client_id=545399263253757953&scope=bot) to authorize Speedrun Bot to join your server.
 
