@@ -1,37 +1,35 @@
-## Welcome to GitHub Pages
+# Adding Speedun Bot to Your Discord Server
 
-You can use the [editor on GitHub](https://github.com/slashinfty/srcom-bot/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Click this [link](https://discordapp.com/oauth2/authorize?client_id=545399263253757953&scope=bot) to authorize Speedrun Bot to join your server.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Commands
 
-### Markdown
+`!src game`
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Gets the world record in the main category for a specific game. For example, `!src super mario world` would get the world record for Super Mario World's main category (first listed category on speedrun.com).
 
-```markdown
-Syntax highlighted code block
+**Note:** game name searching is not perfect (by speedrun.com's API's design), so a better way to search is by the game's speedrun.com abbreviation. Thus, you could search for Super Mario World by doing `!src /smw`. This abbreviation-style searching for games works for all commands.
 
-# Header 1
-## Header 2
-### Header 3
+`!src game;category`
 
-- Bulleted
-- List
+Gets the world record in a specific category for a specific game. For example, `!src super mario world;all castles` would the get the world record in the All Castles category of Super Mario World.
 
-1. Numbered
-2. List
+`!src game;*`
 
-**Bold** and _Italic_ and `Code` text
+Gets a list of all categories for a specific game. For example, `!src celeste;*` would get all (main) categories of Celeste. If you want to include miscellaneous categories, include a `+` at the end, such as `!src celeste;*+`.
 
-[Link](url) and ![Image](src)
-```
+`!src game;category;runner`
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World.
 
-### Jekyll Themes
+`!src -help`
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/slashinfty/srcom-bot/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+DMs the user a list of these commands.
 
-### Support or Contact
+# Embed
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+For each command that returns a specific run, it will give the game name and category, the time and runner name (with a link to the run), a leaderboard rank if it's a PB and not a WR, the date the run was completed, the platform the run was completed on, the region of the game (if available), and if the run was emulated. For the command returning a list of categories, it will link to the game leaderboards.
+
+# Report a Bug
+
+If you have any issues, please report them to the [GitHub](https://github.com/slashinfty/srcom-bot/issues).
