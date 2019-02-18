@@ -10,17 +10,17 @@ Gets the world record in the main category for a specific game. For example, `!s
 
 **Note:** game name searching is not perfect (by speedrun.com's API's design), so a better way to search is by the game's speedrun.com abbreviation. Thus, you could search for Super Mario World by doing `!src /smw`. This abbreviation-style searching for games works for all commands.
 
-`!src game;category`
+`!src game;category|sub-category`
 
-Gets the world record in a specific category for a specific game. For example, `!src super mario world;all castles` would the get the world record in the All Castles category of Super Mario World.
+Gets the world record in a specific category for a specific game. For example, `!src super mario world;all castles` would the get the world record in the All Castles category of Super Mario World. Sub-category is optional, and dependent on the game. For example, `!src /kdl;beat the game|extra mode` would get the world record in the Beat the Game (Extra Mode) category of Kirby's Dream Land.
 
 `!src game;*`
 
 Gets a list of all categories for a specific game. For example, `!src celeste;*` would get all (main) categories of Celeste. If you want to include miscellaneous categories, include a `+` at the end, such as `!src celeste;*+`.
 
-`!src game;category;runner`
+`!src game;category|sub-category;runner`
 
-Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World.
+Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World. As before, sub-category is optional and dependent on the game. To get andreww's No Major Glitches (Low%) PB in The Legend of Zelda: A Link to the Past, you could do `!src /alttp;no major glitches|low%;andreww`.
 
 `!src -help`
 
