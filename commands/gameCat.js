@@ -48,6 +48,7 @@ module.exports = {
                 const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${gameID}/category/${categoryID}?top=1${varFilter}&embed=game,category.variables,players,regions,platforms`);//new
                 const body = await response.json();
         
+                let platform = body.data[0].platforms.data.length > 0 ? body.data[0].platforms.data[0].name : '';
                 let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
                 let emu = body.data.runs[0].run.system.emulated ? ' [EMU]' : '';
                 let subCategory = variableName === undefined ? '' : ' (' + variableName + ')';
@@ -60,7 +61,7 @@ module.exports = {
                     .setURL(body.data.runs[0].run.weblink)
                     .setAuthor(body.data.game.data.names.international + ' - ' + body.data.category.data.name + subCategory)
                     .addField('Date Played:', body.data.runs[0].run.date)
-                    .addField('Played On:', body.data.platforms.data[0].name + region + emu)
+                    .addField('Played On:', platform + region + emu)
                     .setTimestamp();
         
                 message.channel.send(embed);

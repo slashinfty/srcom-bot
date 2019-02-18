@@ -75,8 +75,11 @@ module.exports = {
                             message.reply('runner has no PB in that category');
                         } else {
                             let platform;
-                            const platObj = initial.data[0].platforms.data.find(plat => plat.id === data.run.system.platform);
-                            platform = platObj.name;
+                            if (data.run.system.platform === null) platform = '';
+                            else {
+                                const platObj = initial.data[0].platforms.data.find(plat => plat.id === data.run.system.platform);
+                                platform = platObj.name;
+                            }
                             let region;
                             if (data.run.system.region === null) region = '';
                             else {

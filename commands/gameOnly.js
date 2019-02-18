@@ -16,6 +16,7 @@ module.exports = {
             const response = await fetch(`https://www.speedrun.com/api/v1/games/${gameID}/records?miscellaneous=no&scope=full-game&top=1&embed=game,category,players,platforms,regions`);
             const body = await response.json();
         
+            let platform = body.data[0].platforms.data.length > 0 ? body.data[0].platforms.data[0].name : '';
             let region = body.data[0].regions.data.length > 0 ? ' - ' + body.data[0].regions.data[0].name : '';
             let emu = body.data[0].runs[0].run.system.emulated ? ' [EMU]' : '';
         
@@ -27,7 +28,7 @@ module.exports = {
                 .setURL(body.data[0].runs[0].run.weblink)
                 .setAuthor(body.data[0].game.data.names.international + ' - ' + body.data[0].category.data.name)
                 .addField('Date Played:', body.data[0].runs[0].run.date)
-                .addField('Played On:', body.data[0].platforms.data[0].name + region + emu)
+                .addField('Played On:', platform + region + emu)
                 .setTimestamp();
         
             message.channel.send(embed);
