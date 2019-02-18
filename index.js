@@ -16,7 +16,7 @@ for (const file of commandFiles) {
 client.once('ready', () => {
 	console.log('Ready!');
     client.user.setActivity("!src -help");
-    console.log('Bot is in ' + client.guilds.length + ' servers!');
+    console.log('Bot is in ' + client.guilds.array().length + ' servers!');
     client.guilds.forEach(guild => console.log(guild.name));
 });
 
