@@ -22,6 +22,8 @@ Gets a list of all categories for a specific game. For example, `!src celeste;*`
 
 Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World. As before, sub-category is optional and dependent on the game. To get andreww's No Major Glitches (Low%) PB in The Legend of Zelda: A Link to the Past, you could do `!src /alttp;no major glitches|low%;andreww`.
 
+**Note:** runner name searching is also not perfect (again, by the API's design), but you can search by Twitch username if you add a `*` at the end of the name. This, however, depends on the user registering their Twitch username on speedrun.com.
+
 `!src -help`
 
 DMs the user a list of these commands.

@@ -44,8 +44,9 @@ module.exports = {
                     } else {
                         varFilter = varFilter + '&var-' + variableID + '=' + variableVal;
                     }
-                }                
-                const search = querystring.stringify({ name: args[2] });
+                }
+                const search = args[2].slice(-1) === '*' ? querystring.stringify({ twitch: args[2].slice(0, -1) }) : querystring.stringify({ name: args[2] });
+                console.log(search);
                 const respNext = await fetch(`https://www.speedrun.com/api/v1/users?${search}`);
                 const next = await respNext.json();
                 if (next.data.length === 0) {
