@@ -48,7 +48,7 @@ module.exports = {
                 const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${gameID}/category/${categoryID}?top=1${varFilter}&embed=game,category.variables,players,regions,platforms`);//new
                 const body = await response.json();
         
-                let platform = body.data[0].platforms.data.length > 0 ? body.data[0].platforms.data[0].name : '';
+                let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
                 let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
                 let emu = body.data.runs[0].run.system.emulated ? ' [EMU]' : '';
                 let subCategory = variableName === undefined ? '' : ' (' + variableName + ')';
