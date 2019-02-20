@@ -47,6 +47,11 @@ module.exports = {
                 }
                 const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${gameID}/category/${categoryID}?top=1${varFilter}&embed=game,category.variables,players,regions,platforms`);
                 const body = await response.json();
+                
+                if (body.data.runs.length === 0) {
+                    let catMsg = terms.length === 2 ? terms[0] + ' ' + terms[1] : terms[0];
+                    message.reply(args[0] + ' has no runs in ' + catMsg);
+                }
         
                 let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
                 let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
