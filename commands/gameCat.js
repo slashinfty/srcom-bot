@@ -11,7 +11,7 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}&embed=categories.variables`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found');
+            message.reply('no game found for ' + args[0]);
         } else {
             let gameID = initial.data[0].id;
             let categoryID;
@@ -22,7 +22,7 @@ module.exports = {
                 }
             }
             if (categoryID === undefined) {
-                message.reply('no category found');
+                message.reply('no category found for ' + terms[0]);
             } else {
                 var varFilter = '';
                 var variableName;
@@ -40,23 +40,24 @@ module.exports = {
                         }
                     }
                     if (variableVal === undefined || variableID === undefined) {
-                        message.reply('no sub-category found'); 
+                        message.reply('no sub-category found for ' + terms[1]); 
                     } else {
                         varFilter = varFilter + '&var-' + variableID + '=' + variableVal;
                     }
                 }
-                const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${gameID}/category/${categoryID}?top=1${varFilter}&embed=game,category.variables,players,regions,platforms`);//new
+                const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${gameID}/category/${categoryID}?top=1${varFilter}&embed=game,category.variables,players,regions,platforms`);
                 const body = await response.json();
         
                 let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
                 let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
                 let emu = body.data.runs[0].run.system.emulated ? ' [EMU]' : '';
                 let subCategory = variableName === undefined ? '' : ' (' + variableName + ')';
+                let runnerName = body.data.players.data[0].rel === 'user' ? body.data.players.data[0].names.international : body.data.players.data[0].name;
         
                 const time = require('../seconds.js');
                 const embed = new Discord.RichEmbed()
                     .setColor('#800020')
-                    .setTitle(time.convert(body.data.runs[0].run.times.primary_t) + ' by ' + body.data.players.data[0].names.international)
+                    .setTitle(time.convert(body.data.runs[0].run.times.primary_t) + ' by ' + runnerName)
                     .setThumbnail(body.data.game.data.assets['cover-medium'].uri)
                     .setURL(body.data.runs[0].run.weblink)
                     .setAuthor(body.data.game.data.names.international + ' - ' + body.data.category.data.name + subCategory)

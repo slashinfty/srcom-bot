@@ -36,7 +36,7 @@ client.on('message', async message => {
                 else client.commands.get('game only').execute(Discord, message, terms);
             }
             else if (terms.length === 2) {
-                if (terms[1].charAt(0) === '*') client.commands.get('all categories').execute(Discord, message, terms);
+                if (terms[1].slice(-2).search(/\*/) !== -1) client.commands.get('all categories').execute(Discord, message, terms);
                 else client.commands.get('game and category').execute(Discord, message, terms);
             } else if (terms.length === 3) client.commands.get('runner pb').execute(Discord, message, terms);
          } catch (error) {

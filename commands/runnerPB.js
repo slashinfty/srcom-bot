@@ -11,7 +11,7 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}&embed=categories.variables,regions,platforms`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found');
+            message.reply('no game found for ' + args[0]);
         } else {
             let gameID = initial.data[0].id;
             let categoryID;
@@ -22,7 +22,7 @@ module.exports = {
                 }
             }
             if (categoryID === undefined) {
-                message.reply('no category found');
+                message.reply('no category found for ' + terms[0]);
             } else {
                 var varFilter = '';
                 var variableName;
@@ -40,7 +40,7 @@ module.exports = {
                         }
                     }
                     if (variableVal === undefined || variableID === undefined) {
-                        message.reply('no sub-category found'); 
+                        message.reply('no sub-category found for ' + terms[1]); 
                     } else {
                         varFilter = varFilter + '&var-' + variableID + '=' + variableVal;
                     }
@@ -49,13 +49,13 @@ module.exports = {
                 const respNext = await fetch(`https://www.speedrun.com/api/v1/users?${search}`);
                 const next = await respNext.json();
                 if (next.data.length === 0) {
-                    message.reply('no runner found');
+                    message.reply('no runner found for ' + args[2]);
                 } else {
                     let userID = next.data[0].id;
                     const response = await fetch(`https://www.speedrun.com/api/v1/users/${userID}/personal-bests?game=${gameID}&embed=game,players,category`);
                     const body = await response.json();
                     if (body.data.length === 0) {
-                        message.reply('runner has no PB in that game');
+                        message.reply(args[2] + ' has no PB in ' + args[0]);
                     } else {
                         let data;
                         for (i = 0; i < body.data.length; i++) {
@@ -72,7 +72,8 @@ module.exports = {
                             }
                         }
                         if (data === undefined) {
-                            message.reply('runner has no PB in that category');
+                            let catMsg = terms.length === 2 ? terms[0] + ' ' + terms[1] : terms[0];
+                            message.reply(args[2] + ' has no PB in ' + catMsg);
                         } else {
                             let platform;
                             if (data.run.system.platform === null) platform = '';

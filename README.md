@@ -18,6 +18,10 @@ Gets the world record in a specific category for a specific game. For example, `
 
 Gets a list of all categories for a specific game. For example, `!src celeste;*` would get all (main) categories of Celeste. If you want to include miscellaneous categories, include a `+` at the end, such as `!src celeste;*+`.
 
+`!src game;category|*`
+
+Gets a list of all sub-categories for a specific game, if any sub-categories exist. For example, `!src kirby's dream land;beat the game|*` would get all sub-categories of the Beat the Game category of Kirby's Dream Land.
+
 `!src game;category|sub-category;runner`
 
 Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World. As before, sub-category is optional and dependent on the game. To get andreww's No Major Glitches (Low%) PB in The Legend of Zelda: A Link to the Past, you could do `!src /alttp;no major glitches|low%;andreww`.
@@ -35,3 +39,7 @@ For each command that returns a specific run, it will give the game name and cat
 # Report a Bug
 
 If you have any issues, please report them to the [GitHub](https://github.com/slashinfty/srcom-bot/issues).
+
+## Most Recent Updates
+
+19 February 2019 - Get all sub-categories command; descriptive "can't find" replies; find WRs by runners who are not users ("guests").

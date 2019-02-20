@@ -9,7 +9,7 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found');
+            message.reply('no game found for ' + args[0]);
         } else {
             let gameID = initial.data[0].id;
         
@@ -19,11 +19,12 @@ module.exports = {
             let platform = body.data[0].platforms.data.length > 0 ? body.data[0].platforms.data[0].name : '';
             let region = body.data[0].regions.data.length > 0 ? ' - ' + body.data[0].regions.data[0].name : '';
             let emu = body.data[0].runs[0].run.system.emulated ? ' [EMU]' : '';
+            let runnerName = body.data[0].players.data[0].rel === 'user' ? body.data[0].players.data[0].names.international : body.data[0].players.data[0].name;
         
             const time = require('../seconds.js');
             const embed = new Discord.RichEmbed()
                 .setColor('#800020')
-                .setTitle(time.convert(body.data[0].runs[0].run.times.primary_t) + ' by ' + body.data[0].players.data[0].names.international)
+                .setTitle(time.convert(body.data[0].runs[0].run.times.primary_t) + ' by ' + runnerName)
                 .setThumbnail(body.data[0].game.data.assets['cover-medium'].uri)
                 .setURL(body.data[0].runs[0].run.weblink)
                 .setAuthor(body.data[0].game.data.names.international + ' - ' + body.data[0].category.data.name)
