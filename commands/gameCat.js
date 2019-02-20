@@ -51,26 +51,26 @@ module.exports = {
                 if (body.data.runs.length === 0) {
                     let catMsg = terms.length === 2 ? terms[0] + ' ' + terms[1] : terms[0];
                     message.reply(args[0] + ' has no runs in ' + catMsg);
+                } else {
+                    let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
+                    let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
+                    let emu = body.data.runs[0].run.system.emulated ? ' [EMU]' : '';
+                    let subCategory = variableName === undefined ? '' : ' (' + variableName + ')';
+                    let runnerName = body.data.players.data[0].rel === 'user' ? body.data.players.data[0].names.international : body.data.players.data[0].name;
+        
+                    const time = require('../seconds.js');
+                    const embed = new Discord.RichEmbed()
+                        .setColor('#800020')
+                        .setTitle(time.convert(body.data.runs[0].run.times.primary_t) + ' by ' + runnerName)
+                        .setThumbnail(body.data.game.data.assets['cover-medium'].uri)
+                        .setURL(body.data.runs[0].run.weblink)
+                        .setAuthor(body.data.game.data.names.international + ' - ' + body.data.category.data.name + subCategory)
+                        .addField('Date Played:', body.data.runs[0].run.date)
+                        .addField('Played On:', platform + region + emu)
+                        .setTimestamp();
+        
+                    message.channel.send(embed);
                 }
-        
-                let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
-                let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';
-                let emu = body.data.runs[0].run.system.emulated ? ' [EMU]' : '';
-                let subCategory = variableName === undefined ? '' : ' (' + variableName + ')';
-                let runnerName = body.data.players.data[0].rel === 'user' ? body.data.players.data[0].names.international : body.data.players.data[0].name;
-        
-                const time = require('../seconds.js');
-                const embed = new Discord.RichEmbed()
-                    .setColor('#800020')
-                    .setTitle(time.convert(body.data.runs[0].run.times.primary_t) + ' by ' + runnerName)
-                    .setThumbnail(body.data.game.data.assets['cover-medium'].uri)
-                    .setURL(body.data.runs[0].run.weblink)
-                    .setAuthor(body.data.game.data.names.international + ' - ' + body.data.category.data.name + subCategory)
-                    .addField('Date Played:', body.data.runs[0].run.date)
-                    .addField('Played On:', platform + region + emu)
-                    .setTimestamp();
-        
-                message.channel.send(embed);
             }
         }
 	}
