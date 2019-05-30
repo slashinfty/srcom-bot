@@ -11,18 +11,19 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}&embed=categories.variables`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found for ' + args[0]);
+            message.reply('No game found for "' + args[0] + '"');
         } else {
             let gameID = initial.data[0].id;
             let categoryID;
             for (i = 0; i < initial.data[0].categories.data.length; i++) {
                 if (initial.data[0].categories.data[i].name.toLowerCase() == terms[0].toLowerCase()) {
                     categoryID = initial.data[0].categories.data[i].id;
+					var catName = initial.data[0].categories.data[i].name;
                     break;
                 }
             }
             if (categoryID === undefined) {
-                message.reply('no category found for ' + terms[0]);
+                message.reply('No category found for "' + terms[0] + '" in ' + initial.data[0].names.international);
             } else {
                 var varFilter = '';
                 var variableName;
@@ -40,7 +41,7 @@ module.exports = {
                         }
                     }
                     if (variableVal === undefined || variableID === undefined) {
-                        message.reply('no sub-category found for ' + terms[1]); 
+                        message.reply('No sub-category found for "' + terms[1] + '" in ' + initial.data[0].names.international + ' - ' + catName); 
                     } else {
                         varFilter = varFilter + '&var-' + variableID + '=' + variableVal;
                     }
@@ -49,8 +50,8 @@ module.exports = {
                 const body = await response.json();
                 
                 if (body.data.runs.length === 0) {
-                    let catMsg = terms.length === 2 ? terms[0] + ' ' + terms[1] : terms[0];
-                    message.reply(args[0] + ' has no runs in ' + catMsg);
+                    let catMsg = terms.length === 2 ? catName + ' (' + variableName + ')': catName;
+                    message.reply(body.data.game.data.names.international + ' has no runs in ' + catMsg);
                 } else {
                     let platform = body.data.platforms.data.length > 0 ? body.data.platforms.data[0].name : '';
                     let region = body.data.regions.data.length > 0 ? ' - ' + body.data.regions.data[0].name : '';

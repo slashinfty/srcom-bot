@@ -11,25 +11,25 @@ module.exports = {
         const response = await fetch(`https://www.speedrun.com/api/v1/games?${filter}&embed=categories`);
         const body = await response.json();
         if (body.data.length === 0) {
-            message.reply('no game found for ' + args[0]);
+            message.reply('No game found for "' + args[0] + '"');
         } else {
             if (terms.length === 2 && terms[1] !== '') {
                 let categoryID;
-                    for (i = 0; i < body.data[0].categories.data.length; i++) {
-                        if (body.data[0].categories.data[i].name.toLowerCase() == terms[0].toLowerCase()) {
-                            categoryID = body.data[0].categories.data[i].id;
-                            var categoryURL = body.data[0].categories.data[i].weblink;
-                            var categoryName = body.data[0].categories.data[i].name;
-                            break;
-                        }
+                for (i = 0; i < body.data[0].categories.data.length; i++) {
+                    if (body.data[0].categories.data[i].name.toLowerCase() == terms[0].toLowerCase()) {
+                        categoryID = body.data[0].categories.data[i].id;
+                        var categoryURL = body.data[0].categories.data[i].weblink;
+                        var categoryName = body.data[0].categories.data[i].name;
+                        break;
                     }
+                }
                 if (categoryID === undefined) {
-                    message.reply('no category found for ' + terms[0]);
+                    message.reply('No category found for "' + terms[0] + '" in ' + body.data[0].names.international);
                 } else {
                     const respSec = await fetch(`https://www.speedrun.com/api/v1/categories/${categoryID}/variables`);
                     const secondary = await respSec.json();
                     if (secondary.data.length === 0) {
-                        message.reply('no sub-categories found for ' + terms[0]);
+                        message.reply('No sub-categories found for ' + categoryName + ' in ' + body.data[0].names.international);
                     } else {
                         var subCategoryList = '';
                         for (i = 0; i < secondary.data.length; i++) {
@@ -39,8 +39,8 @@ module.exports = {
                                 });
                             }
                         }
-                        if (subCategoryList === undefined) {
-                            message.reply('no sub-categories found for ' + terms[0]);
+                        if (subCategoryList === '') {
+                            message.reply('No sub-categories found for ' + categoryName + ' in ' + body.data[0].names.international);
                         } else {
                             const subCatEmbed = new Discord.RichEmbed()
                                 .setColor('#800020')

@@ -9,7 +9,7 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found for ' + args[0]);
+            message.reply('No game found for "' + args[0] + '"');
         } else {
             let gameID = initial.data[0].id;
         
@@ -17,7 +17,7 @@ module.exports = {
             const body = await response.json();
             
             if (body.data[0].runs.length === 0) {
-                message.reply(args[0] + ' has no runs');
+                message.reply(body.data[0].game.data.names.international + ' has no runs');
             } else {
                 let platform = body.data[0].platforms.data.length > 0 ? body.data[0].platforms.data[0].name : '';
                 let region = body.data[0].regions.data.length > 0 ? ' - ' + body.data[0].regions.data[0].name : '';

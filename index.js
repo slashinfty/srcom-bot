@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const prefix = '!src';
+const prefix = ['!src', '!sml2r'];
 require('dotenv').config();
 
 const client = new Discord.Client();
@@ -21,29 +21,39 @@ client.once('ready', () => {
 });
 
 client.on('message', async message => {
-	if (!message.content.startsWith(prefix) || message.author.bot) return;
+	if ((!message.content.startsWith(prefix[0]) && !message.content.startsWith(prefix[1])) || message.author.bot) return;
 
-	const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
-    let terms = args[0].split(';');
-    terms.forEach((term, index, array) => { array[index] = term.trim() });
+    if (message.content.startsWith('!src')) {
+		const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
+    	let terms = args[0].split(';');
+    	terms.forEach((term, index, array) => { array[index] = term.trim() });
     
-    if (terms.length === 0 || terms.length > 3) {
-        message.reply('those are the incorrect number of arguments. Try !src -help if you need assistance.');
-    } else {
-         try {
-            if (terms.length === 1) {
-                if (terms[0] === '-help') client.commands.get('help').execute(message, terms);
-                else client.commands.get('game only').execute(Discord, message, terms);
-            }
-            else if (terms.length === 2) {
-                if (terms[1].slice(-2).search(/\*/) !== -1) client.commands.get('all categories').execute(Discord, message, terms);
-                else client.commands.get('game and category').execute(Discord, message, terms);
-            } else if (terms.length === 3) client.commands.get('runner pb').execute(Discord, message, terms);
-         } catch (error) {
-            console.error(error);
-            message.reply('sorry, there was a problem. Try !src -help if you need assistance.');
-        }
-    }
+		if (terms.length === 0 || terms.length > 3) {
+        	message.reply('those are the incorrect number of arguments. Try !src -help if you need assistance.');
+    	} else {
+         	try {
+            	if (terms.length === 1) {
+                	if (terms[0] === '-help') client.commands.get('help').execute(message, terms);
+                	else client.commands.get('game only').execute(Discord, message, terms);
+            	}
+            	else if (terms.length === 2) {
+                	if (terms[1].slice(-2).search(/\*/) !== -1) client.commands.get('all categories').execute(Discord, message, terms);
+                	else client.commands.get('game and category').execute(Discord, message, terms);
+            	} else if (terms.length === 3) client.commands.get('runner pb').execute(Discord, message, terms);
+		 	} catch (error) {
+			 	console.error(error);
+            	message.reply('Sorry, there was a problem. Try !src -help if you need assistance.');
+        	}
+    	}
+	} else if (message.content.startsWith('!sml2r')) {
+		const args = message.content.match(/^(\S+)\s(.*)/).slice(2)[0];
+		try {
+			client.commands.get('sml2 randomizer').execute(Discord, message, args);
+		} catch (error) {
+			console.error(error);
+			message.channel.send('Create a seed at http://sml2r.download/');
+		}
+	}
 });
 
 client.login(process.env.TOKEN);

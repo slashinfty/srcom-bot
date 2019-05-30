@@ -11,18 +11,20 @@ module.exports = {
         const respInitial = await fetch(`https://www.speedrun.com/api/v1/games?${filter}&embed=categories.variables,regions,platforms`);
         const initial = await respInitial.json();
         if (initial.data.length === 0) {
-            message.reply('no game found for ' + args[0]);
+            message.reply('No game found for "' + args[0] + '"');
         } else {
             let gameID = initial.data[0].id;
+			let gameName = initial.data[0].names.international;
             let categoryID;
             for (i = 0; i < initial.data[0].categories.data.length; i++) {
                 if (initial.data[0].categories.data[i].name.toLowerCase() == terms[0].toLowerCase()) {
                     categoryID = initial.data[0].categories.data[i].id;
+					var catName = initial.data[0].categories.data[i].name;
                     break;
                 }
             }
             if (categoryID === undefined) {
-                message.reply('no category found for ' + terms[0]);
+                message.reply('No category found for "' + terms[0] + '" in ' + initial.data[0].names.international);
             } else {
                 var varFilter = '';
                 var variableName;
@@ -40,7 +42,7 @@ module.exports = {
                         }
                     }
                     if (variableVal === undefined || variableID === undefined) {
-                        message.reply('no sub-category found for ' + terms[1]); 
+                        message.reply('No sub-category found for "' + terms[1] + '" in ' + initial.data[0].names.international + ' - ' + catName); 
                     } else {
                         varFilter = varFilter + '&var-' + variableID + '=' + variableVal;
                     }
@@ -49,13 +51,15 @@ module.exports = {
                 const respNext = await fetch(`https://www.speedrun.com/api/v1/users?${search}`);
                 const next = await respNext.json();
                 if (next.data.length === 0) {
-                    message.reply('no runner found for ' + args[2]);
+                    message.reply('No runner found for "' + args[2] + '"');
                 } else {
                     let userID = next.data[0].id;
+					let playerName = next.data[0].names.international;
                     const response = await fetch(`https://www.speedrun.com/api/v1/users/${userID}/personal-bests?game=${gameID}&embed=game,players,category`);
                     const body = await response.json();
                     if (body.data.length === 0) {
-                        message.reply(args[2] + ' has no PB in ' + args[0]);
+                        let catMsg = terms.length === 2 ? catName + ' (' + variableName + ')': catName;
+                        message.reply(playerName + ' has no PB in ' + gameName + ' - ' + catMsg);
                     } else {
                         let data;
                         for (i = 0; i < body.data.length; i++) {
@@ -72,8 +76,8 @@ module.exports = {
                             }
                         }
                         if (data === undefined) {
-                            let catMsg = terms.length === 2 ? terms[0] + ' ' + terms[1] : terms[0];
-                            message.reply(args[2] + ' has no PB in ' + catMsg);
+                            let catMsg = terms.length === 2 ? catName + ' (' + variableName + ')': catName;
+                            message.reply(playerName + ' has no PB in ' + gameName + ' - ' + catMsg);
                         } else {
                             let platform;
                             if (data.run.system.platform === null) platform = '';
