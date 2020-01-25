@@ -18,6 +18,10 @@ Gets the world record in a specific category for a specific game. For example, `
 
 Gets a list of all categories for a specific game. For example, `!src celeste;*` would get all (main) categories of Celeste. If you want to include miscellaneous categories, include a `+` at the end, such as `!src celeste;*+`.
 
+`!src game;category?`
+
+Gets the rules for a category of a specific games. For example, `!src kirby's dream land;beat the game?` would get the rules for the Beat the Game category of Kirby's Dream Land.
+
 `!src game;category|*`
 
 Gets a list of all sub-categories for a specific game, if any sub-categories exist. For example, `!src kirby's dream land;beat the game|*` would get all sub-categories of the Beat the Game category of Kirby's Dream Land.

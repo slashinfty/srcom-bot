@@ -47,7 +47,7 @@ module.exports = {
                                 .setTitle('Leaderboard')
                                 .setThumbnail(body.data[0].assets['cover-medium'].uri)
                                 .setURL(categoryURL)
-                                .setAuthor(body.data[0].names.international + ' - ' + categoryName)//add category name
+                                .setAuthor(body.data[0].names.international + ' - ' + categoryName)
                                 .setDescription('Sub-categories: ' + subCategoryList)
                                 .setTimestamp();
         
