@@ -30,7 +30,7 @@ module.exports = {
             if (categoryID === undefined) {
                 message.reply('No category found for "' + catInput + '" in ' + body.data[0].names.international);
             } else {
-                const rulesEmbed = new Discord.richEmbed()
+                const rulesEmbed = new Discord.RichEmbed()
                     .setColor('#800020')
                     .setTitle('Category Rules')
                     .setThumbnail(body.data[0].assets['cover-medium'].uri)
