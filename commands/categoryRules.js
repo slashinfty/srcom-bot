@@ -17,8 +17,9 @@ module.exports = {
         } else {
             let gameID = body.data[0].id;
             let categoryID;
+            let catInput = terms[0].slice(0, -1);
             for (i = 0; i < body.data[0].categories.data.length; i++) {
-                if (body.data[0].categories.data[i].name.toLowerCase() == terms[0].toLowerCase()) {
+                if (body.data[0].categories.data[i].name.toLowerCase() == catInput.toLowerCase()) {
                     categoryID = body.data[0].categories.data[i].id;
 					var catName = body.data[0].categories.data[i].name;
                     var catURL = body.data[0].categories.data[i].weblink;
@@ -27,7 +28,7 @@ module.exports = {
                 }
             }
             if (categoryID === undefined) {
-                message.reply('No category found for "' + terms[0] + '" in ' + body.data[0].names.international);
+                message.reply('No category found for "' + catInput + '" in ' + body.data[0].names.international);
             } else {
                 const rulesEmbed = new Discord.richEmbed()
                     .setColor('#800020')
