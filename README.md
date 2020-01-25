@@ -46,6 +46,8 @@ If you have any issues, please report them to the [GitHub](https://github.com/sl
 
 ## Most Recent Updates
 
+25 January 2020 - Added the ability to search for category rules.
+
 30 May 2019 - Provides proper name feedback on queries that have no results.
 
 20 February 2019 - Added a reply for queries that result in games/categories with no runs.
