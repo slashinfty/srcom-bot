@@ -22,6 +22,12 @@ Gets a list of all categories for a specific game. For example, `!src celeste;*`
 
 Gets the rules for a category of a specific games. For example, `!src kirby's dream land;beat the game?` would get the rules for the Beat the Game category of Kirby's Dream Land.
 
+**Note:** some categories do not have rules, but their sub-categories do.
+
+`!src game;category|sub-category?`
+
+Gets the rules for a sub-category of a specific game. If a sub-category does not have rules, the rules for the category will be returned. For example, `!src /oot;glitchless|any%?` would get the rules for the Glitchless Any% category of The Legend of Zelda: Ocarina of Time.
+
 `!src game;category|*`
 
 Gets a list of all sub-categories for a specific game, if any sub-categories exist. For example, `!src kirby's dream land;beat the game|*` would get all sub-categories of the Beat the Game category of Kirby's Dream Land.
@@ -45,6 +51,8 @@ For each command that returns a specific run, it will give the game name and cat
 If you have any issues, please report them to the [GitHub](https://github.com/slashinfty/srcom-bot/issues).
 
 ## Most Recent Updates
+
+18 February 2020 - Added the ability to search for sub-category rules. Game rules are not in the SRC API yet, though.
 
 25 January 2020 - Added the ability to search for category rules.
 

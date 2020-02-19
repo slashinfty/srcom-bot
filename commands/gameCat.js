@@ -29,13 +29,15 @@ module.exports = {
                 var variableName;
                 if (terms.length > 1) {
                     let variableID, variableVal;
-                    for (i = 0; i < initial.data[0].categories.data[0].variables.data.length; i++) {
-                        if (initial.data[0].categories.data[0].variables.data[i]['is-subcategory']) {
-                            Object.keys(initial.data[0].categories.data[0].variables.data[i].values.values).forEach((key, index) => {
-                                if (initial.data[0].categories.data[0].variables.data[i].values.values[key].label.toLowerCase() === terms[1].toLowerCase()) {
+                    const subResponse = await fetch(`https://www.speedrun.com/api/v1/categories/${categoryID}/variables`);
+                    const subBody = await subResponse.json();
+                    for (i = 0; i < subBody.data.length; i++) {
+                        if (subBody.data[i]['is-subcategory']) {
+                            Object.keys(subBody.data[i].values.values).forEach((key, index) => {
+                                if (subBody.data[i].values.values[key].label.toLowerCase() === terms[1].toLowerCase()) {
                                     variableVal = key;
-                                    variableID = initial.data[0].categories.data[0].variables.data[i].id;
-                                    variableName = initial.data[0].categories.data[0].variables.data[i].values.values[key].label;
+                                    variableID = subBody.data[i].id;
+                                    variableName = subBody.data[i].values.values[key].label;
                                 }
                             });
                         }
