@@ -4,41 +4,35 @@ Click this [link](https://discordapp.com/oauth2/authorize?client_id=545399263253
 
 # Commands
 
-`!src game`
+**Get world record of a game:** `!src game`
 
 Gets the world record in the main category for a specific game. For example, `!src super mario world` would get the world record for Super Mario World's main category (first listed category on speedrun.com).
 
-**Note:** game name searching is not perfect (by speedrun.com's API's design), so a better way to search is by the game's speedrun.com abbreviation. Thus, you could search for Super Mario World by doing `!src /smw`. This abbreviation-style searching for games works for all commands.
+*Note:* game name searching is not perfect (by speedrun.com's API's design), so a better way to search is by the game's speedrun.com abbreviation. Thus, you could search for Super Mario World by doing `!src /smw`. This abbreviation-style searching for games works for all commands.
 
-`!src game;category|sub-category`
+**Get world record of a specific category of a game:** `!src game;category|sub-category`
 
 Gets the world record in a specific category for a specific game. For example, `!src super mario world;all castles` would the get the world record in the All Castles category of Super Mario World. Sub-category is optional, and dependent on the game. For example, `!src /kdl;beat the game|extra mode` would get the world record in the Beat the Game (Extra Mode) category of Kirby's Dream Land.
 
-`!src game;*`
+**Get a list of a game's categories:** `!src game;*`
 
 Gets a list of all categories for a specific game. For example, `!src celeste;*` would get all (main) categories of Celeste. If you want to include miscellaneous categories, include a `+` at the end, such as `!src celeste;*+`.
 
-`!src game;category?`
+*Note:* some games have sub-categories, and they can be retrieved with `!src game;category|*`.
+
+**Get the rules of a category of a game:** `!src game;category?`
 
 Gets the rules for a category of a specific games. For example, `!src kirby's dream land;beat the game?` would get the rules for the Beat the Game category of Kirby's Dream Land.
 
-**Note:** some categories do not have rules, but their sub-categories do.
+*Note:* some categories do not have rules, but their sub-categories do. The rules of a subcategory can be retrieved using `!src game;category|sub-category?`. If the sub-category does not have rules, the category's rules are returned.
 
-`!src game;category|sub-category?`
-
-Gets the rules for a sub-category of a specific game. If a sub-category does not have rules, the rules for the category will be returned. For example, `!src /oot;glitchless|any%?` would get the rules for the Glitchless Any% category of The Legend of Zelda: Ocarina of Time.
-
-`!src game;category|*`
-
-Gets a list of all sub-categories for a specific game, if any sub-categories exist. For example, `!src kirby's dream land;beat the game|*` would get all sub-categories of the Beat the Game category of Kirby's Dream Land.
-
-`!src game;category|sub-category;runner`
+**Get the personal best of a runner:** `!src game;category|sub-category;runner`
 
 Gets a person best for a specific runner in a specific category of a specific game. For example, `!src super mario world;0 exit;linkdeadx2` would get linkdeadx2's personal best in the 0 Exit category of Super Mario World. As before, sub-category is optional and dependent on the game. To get andreww's No Major Glitches (Low%) PB in The Legend of Zelda: A Link to the Past, you could do `!src /alttp;no major glitches|low%;andreww`.
 
-**Note:** runner name searching is also not perfect (again, by the API's design), but you can search by Twitch username if you add a `*` at the end of the name. This, however, depends on the user registering their Twitch username on speedrun.com.
+*Note:* runner name searching is also not perfect (again, by the API's design), but you can search by Twitch username if you add a `*` at the end of the name. This, however, depends on the user registering their Twitch username on speedrun.com.
 
-`!src -help`
+**Get help:** `!src -help`
 
 DMs the user a list of these commands.
 
