@@ -46,6 +46,8 @@ If you have any issues, please report them to the [GitHub](https://github.com/sl
 
 ## Most Recent Updates
 
+21 February 2020 - Returns a list of subcategories when the rules of a category do not exist.
+
 18 February 2020 - Added the ability to search for sub-category rules. Game rules are not in the SRC API yet, though.
 
 25 January 2020 - Added the ability to search for category rules.

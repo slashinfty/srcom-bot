@@ -56,6 +56,9 @@ module.exports = {
                     catRules = body.data[0].categories.data[i].rules;
                     if (catRules === undefined || catRules === '' || catRules === null) {
                         message.reply('No rules defined for "' + catInput + '" in ' + body.data[0].names.international + ' - try a sub-category?');
+                        const categories = require('./allCategories.js');
+                        let sendArgs = [args[0], args[1].replace(/\?$/, "|*")];
+                        categories.execute(Discord, message, sendArgs);
                         return;
                     }
                 }
