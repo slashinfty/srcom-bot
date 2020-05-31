@@ -24,7 +24,7 @@ client.on('message', async message => {
 	if ((!message.content.startsWith(prefix[0]) && !message.content.startsWith(prefix[1])) || message.author.bot) return;
 
     if (message.content.startsWith('!src')) {
-        const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
+      const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
     	let terms = args[0].split(';');
     	terms.forEach((term, index, array) => { array[index] = term.trim() });
     	if (terms.length === 0 || terms.length > 3) {
@@ -52,6 +52,20 @@ client.on('message', async message => {
 		} catch (error) {
 			console.error(error);
 			message.channel.send('Create a seed at http://sml2r.download/');
+		}
+	} else if (message.content.startsWith('!rtgg')) {
+		const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
+		let terms = args[0].split(';');
+		terms.forEach((term, index, array) => { array[index] = term.trim() });
+		if (terms.length === 0 || terms.length > 2) {
+			message.reply('those are the incorrect number of arguments. Try !-src -help if you need assistance.');
+		} else {
+			try {
+				client.commands.get('racetime leaderboards').execute(Discord, message, terms);
+			} catch (error) {
+				console.error(error);
+				message.reply('Sorry, there was a problem. Try !src -help if you need assistance.');
+			}
 		}
 	}
 });
