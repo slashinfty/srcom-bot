@@ -36,6 +36,16 @@ Gets a person best for a specific runner in a specific category of a specific ga
 
 DMs the user a list of these commands.
 
+# Other Commands
+
+**Get leaderboard rankings from racetime.gg**: `!rtgg slug;category`
+
+Gets the top 10 (or top X if the number of racers is less than 10) of a category leaderboard. Category can be left blank, in which case the category with the most races is selected.
+
+**Get a Super Mario Land 2 Randomizer race seed:** `!sml2r race`
+
+Returns a random seed with the most common race flags of the Super Mario Land 2: 6 Golden Coins [Randomizer](http://sml2r.download/).
+
 # Embed
 
 For each command that returns a specific run, it will give the game name and category, the time and runner name (with a link to the run), a leaderboard rank if it's a PB and not a WR, the date the run was completed, the platform the run was completed on, the region of the game (if available), and if the run was emulated. For the command returning a list of categories, it will link to the game leaderboards.

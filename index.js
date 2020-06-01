@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const prefix = ['!src', '!sml2r'];
+const prefix = ['!src', '!sml2r', '!rtgg'];
 require('dotenv').config();
 
 const client = new Discord.Client();
@@ -21,7 +21,7 @@ client.once('ready', () => {
 });
 
 client.on('message', async message => {
-	if ((!message.content.startsWith(prefix[0]) && !message.content.startsWith(prefix[1])) || message.author.bot) return;
+	if ((!message.content.startsWith(prefix[0]) && !message.content.startsWith(prefix[1]) && !message.content.startsWith(prefix[2])) || message.author.bot) return;
 
     if (message.content.startsWith('!src')) {
       const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
