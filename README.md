@@ -40,7 +40,7 @@ DMs the user a list of these commands.
 
 **Get leaderboard rankings from racetime.gg**: `!rtgg slug;category`
 
-Gets the top 10 (or top X if the number of racers is less than 10) of a category leaderboard. Category can be left blank, in which case the category with the most races is selected.
+Gets the top 10 (or top X if the number of racers is less than 10) of a category leaderboard, sorted by score. Appending `*` to the category name sorts results by best time; appending `+` to the category name sorts results by most races. Category can be left blank, in which case the category with the most races is selected.
 
 **Get a Super Mario Land 2 Randomizer race seed:** `!sml2r race`
 
