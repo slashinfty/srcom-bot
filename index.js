@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Discord = require('discord.js');
 const prefix = ['!src', '!sml2r', '!rtgg'];
 require('dotenv').config();
@@ -6,7 +7,8 @@ require('dotenv').config();
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandsPath = path.join(__dirname, '/commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -70,4 +72,4 @@ client.on('message', async message => {
 	}
 });
 
-client.login(process.env.TOKEN);
+client.login("NTQ1Mzk5MjYzMjUzNzU3OTUz.D0ZMAw.cKDLCeOcjZT5_I_XTyPm-_xm8z8");

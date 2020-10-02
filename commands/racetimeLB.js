@@ -1,11 +1,30 @@
+const iso = require('iso8601-duration');
 module.exports = {
     name: 'racetime leaderboards',
     description: 'Get leaderboards on racetime for a game',
     execute: async function (Discord, message, args) {
+        const convert = time => {
+            let hr, min, sec, ms;
+            let parts = time.toString().split('.');
+            ms = parts.length > 1 ? parseInt((parts[1] + '00').substr(0,3)) : undefined;
+            sec = parseInt(parts[0]);
+            if (sec >= 60) {min = Math.floor(sec / 60); sec = ('0' + (sec % 60)).substr(-2, 2);}
+            if (min >= 60) {hr = Math.floor(min / 60); min = ('0' + (min % 60)).substr(-2, 2);}
+            ms = ('00' + ms).substr(-3, 3);
+            if (min === undefined) return ms === undefined ? sec.toString() + 's' : sec.toString() + 's ' + ms.toString() + 'ms';
+            else if (hr === undefined) return ms === undefined ? min.toString() + 'm ' + sec.toString() + 's' : min.toString() + 'm ' + sec.toString() + 's ' + ms.toString() + 'ms';
+            else return ms === undefined ? hr.toString() + 'h ' + min.toString() + 'm ' + sec.toString() + 's' : hr.toString() + 'h ' + min.toString() + 'm ' + sec.toString() + 's ' + ms.toString() + 'ms';
+        }
+
         let slug = args[0];
         let cat = args.length > 1 ? args[1].trim() : null;
 
         const fetch = require('node-fetch');
+        let listGoals = false;
+        if (slug.endsWith('?')) {
+            slug = slug.slice(0, -1);
+            listGoals = true;
+        }
         try {
             var gameResponse = await fetch(`https://racetime.gg/${slug}/data`);
             var gameBody = await gameResponse.json();
@@ -14,11 +33,43 @@ module.exports = {
             message.channel.send('Sorry, ' + slug + ' is does not correspond to a game.');
             return;
         }
-        const response = await fetch(`https://racetime.gg/${slug}/leaderboards/data`);
+        let link = 'https://racetime.gg' + gameBody.url + '/leaderboards';
+        let image = 'http://racetime.gg' + gameBody.image;
+        if (listGoals) {
+            const lbResponse = await fetch (`https://racetime.gg/${slug}/leaderboards/data`);
+            const lbBody = await lbResponse.json();
+            const lb = lbBody.leaderboards;
+            let goalList = '';
+            lb.forEach((g, i) => goalList += i == (lb.length - 1) ? g.goal : g.goal + '\n');
+            const embed = new Discord.RichEmbed()
+                .setColor('#800020')
+                .setTitle('Leaderboard')
+                .setThumbnail(image)
+                .setURL(link)
+                .setAuthor(gameBody.name)
+                .addField('List of Goals', goalList)
+                .setTimestamp();
+            
+            message.channel.send(embed);
+            return;
+        }
+        let sortByPB = false;
+        let sortByRaces = false;
+        let query = '';
+        let catName = args[1].toLowerCase();
+        if (args[1].endsWith('*')) {
+            sortByPB = true;
+            catName = catName.slice(0, -1);
+            query = '?sort=best_time';
+        } else if (args[1].endsWith('+')) {
+            sortByRaces = true;
+            catName = catName.slice(0, -1);
+            query = '?sort=times_raced';
+        }
+        const response = await fetch(`https://racetime.gg/${slug}/leaderboards/data${query}`);
         const body = await response.json();
         const lbArr = body.leaderboards;
-
-        const catBoard = cat === null ? lbArr[0] : lbArr.find(lb => lb.goal.toLowerCase() === args[1].toLowerCase());
+        const catBoard = cat === null ? lbArr[0] : lbArr.find(lb => lb.goal.toLowerCase() === catName);
         if (catBoard === undefined) {
             message.channel.send(gameBody.name + ' does not have a category named ' + cat);
         }
@@ -27,23 +78,25 @@ module.exports = {
             message.channel.send(catBoard.goal + ' does not have any races yet!');
         } else {
             let playerList = '';
+            let title = gameBody.name + ' - ' + catBoard.goal;
             for (let i = 0; i < limit; i++) {
                 let player = catBoard.rankings[i];
-                playerList += player.place_ordinal + ': ' + player.user.name + ' (' + player.score + ')';
+                let playerValue;
+                if (sortByPB) playerValue = convert(iso.toSeconds(iso.parse(player.best_time)));
+                else if (sortByRaces) playerValue = player.times_raced;
+                else playerValue = player.score;
+                playerList += player.place_ordinal + ': ' + player.user.name + ' (' + playerValue + ')';
                 playerList += i < (limit - 1) ? '\n' : '';
             }
-            
-            let title = gameBody.name + ' - ' + catBoard.goal;
-            let link = 'https://racetime.gg' + gameBody.url + '/leaderboards';
-            let image = 'http://racetime.gg' + gameBody.image;
-
+            let rankingHeader = 'Top ' + limit.toString() + ' by ';
+            rankingHeader += sortByPB ? 'Best Time' : sortByRaces ? 'Most Races' : 'Score';
             const embed = new Discord.RichEmbed()
                 .setColor('#800020')
                 .setTitle('Leaderboard')
                 .setThumbnail(image)
                 .setURL(link)
                 .setAuthor(title)
-                .addField('Top ' + limit.toString(), playerList)
+                .addField(rankingHeader, playerList)
                 .setTimestamp();
             
             message.channel.send(embed);
