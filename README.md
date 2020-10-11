@@ -74,17 +74,17 @@ Gets the top 10 (or top X if the number of racers is less than 10) of a specific
 
 ![rtgg goal screenshot](screenshots/screenshot17.png)
 
-Appending `*` to the category name sorts results by best time.
+Appending `*` to the goal sorts results by best time.
 
 ![rtgg time screenshot](screenshots/screenshot12.png)
 
-Appending `+` to the category name sorts results by most races.
+Appending `+` to the goal sorts results by most races.
 
 ![rtgg races screenshot](screenshots/screenshot13.png)
 
 **Get a list of a game's goals**: `!rtgg slug?`
 
-Gets a list of a game's categories.
+Gets a list of a game's goals.
 
 ![rtgg list screenshot](screenshots/screenshot14.png)
 
