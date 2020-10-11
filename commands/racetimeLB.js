@@ -18,6 +18,7 @@ module.exports = {
 
         let slug = args[0];
         let cat = args.length > 1 ? args[1].trim() : null;
+        let runner = args.length > 2 ? args[2].trim() : null;
 
         const fetch = require('node-fetch');
         let listGoals = false;
@@ -56,15 +57,18 @@ module.exports = {
         let sortByPB = false;
         let sortByRaces = false;
         let query = '';
-        let catName = args[1].toLowerCase();
-        if (args[1].endsWith('*')) {
-            sortByPB = true;
-            catName = catName.slice(0, -1);
-            query = '?sort=best_time';
-        } else if (args[1].endsWith('+')) {
-            sortByRaces = true;
-            catName = catName.slice(0, -1);
-            query = '?sort=times_raced';
+        let catName = cat === null ? null : cat.toLowerCase();
+        if (catName !== null) {
+            if (args.length > 2) catName = catName.endsWith('*') || catName.endsWith('+') ? catName.slice(0, -1) : catName;
+            else if (args[1].endsWith('*')) {
+                sortByPB = true;
+                catName = catName.slice(0, -1);
+                query = '?sort=best_time';
+            } else if (args[1].endsWith('+')) {
+                sortByRaces = true;
+                catName = catName.slice(0, -1);
+                query = '?sort=times_raced';
+            }
         }
         const response = await fetch(`https://racetime.gg/${slug}/leaderboards/data${query}`);
         const body = await response.json();
@@ -72,13 +76,45 @@ module.exports = {
         const catBoard = cat === null ? lbArr[0] : lbArr.find(lb => lb.goal.toLowerCase() === catName);
         if (catBoard === undefined) {
             message.channel.send(gameBody.name + ' does not have a category named ' + cat);
+            return;
         }
         const limit = catBoard.num_ranked > 10 ? 10 : catBoard.num_ranked;
+        let title = gameBody.name + ' - ' + catBoard.goal;
         if (limit === 0) {
-            message.channel.send(catBoard.goal + ' does not have any races yet!');
+            message.channel.send(gameBody.name + ' - ' + catBoard.goal + ' does not have any races yet!');
+            return;
+        }
+        else if (args.length > 2) {
+            let statsList = '';
+            let rankings = catBoard.rankings.map(u => {
+                return {"name": u.user.name, "score": u.score, "best": iso.toSeconds(iso.parse(u.best_time)), "races": u.times_raced};
+            });
+            const player = rankings.find(u => u.name.toLowerCase() == args[2].toLowerCase());
+            if (player === undefined) {
+                message.channel.send('Can not find ' + args[2] + ' in ' + gameBody.name + ' - ' + catBoard.goal);
+                return;
+            }
+            const suffix = i => {
+                let j = i % 10, k = i % 100;
+                return j === 1 && k !== 11 ? i + 'st' : j === 2 && k !== 12 ? i + 'nd' : j === 3 && k !== 13 ? i + 'rd' : i + 'th';
+            };
+            statsList += 'Score: ' + player.score + ' (' + suffix(rankings.findIndex(p => player.name === p.name) + 1) + ')\n';
+            rankings.sort((a, b) => a.best > b.best ? 1 : a.best === b.best ? (a.score < b.score ? 1 : -1) : -1);
+            statsList += 'Best: ' + convert(player.best) + ' (' + suffix(rankings.findIndex(p => player.name === p.name) + 1) + ')\n';
+            rankings.sort((a, b) => a.races < b.races ? 1 : a.races === b.races ? (a.score < b.score ? 1 : -1) : -1);
+            statsList += 'Races: ' + player.races + ' (' + suffix(rankings.findIndex(p => player.name === p.name) + 1) + ')';
+            const embed = new Discord.RichEmbed()
+                .setColor('#800020')
+                .setTitle('Leaderboard')
+                .setThumbnail(image)
+                .setURL(link)
+                .setAuthor(title)
+                .addField(player.name, statsList)
+                .setTimestamp();
+            
+            message.channel.send(embed);
         } else {
             let playerList = '';
-            let title = gameBody.name + ' - ' + catBoard.goal;
             for (let i = 0; i < limit; i++) {
                 let player = catBoard.rankings[i];
                 let playerValue;

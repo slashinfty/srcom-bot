@@ -59,7 +59,7 @@ client.on('message', async message => {
 		const args = message.content.match(/^(\S+)\s(.*)/).slice(2);
 		let terms = args[0].split(';');
 		terms.forEach((term, index, array) => { array[index] = term.trim() });
-		if (terms.length === 0 || terms.length > 2) {
+		if (terms.length === 0 || terms.length > 3) {
 			message.reply('those are the incorrect number of arguments. Try !-src -help if you need assistance.');
 		} else {
 			try {
